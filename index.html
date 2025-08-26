@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css">
+  <title>MedTech — Health Portal</title>
+  <style>
+    :root{
+      --bg:#0f172a;
+      --panel:#111827;
+      --muted:#1f2937;
+      --accent:#22d3ee;
+      --accent-2:#38bdf8;
+      --text:#e5e7eb;
+      --sub:#94a3b8;
+      --ok:#22c55e;
+      --warn:#f59e0b;
+      --err:#ef4444;
+      --radius:16px;
+      --shadow:0 10px 25px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background: radial-gradient(1200px 600px at 80% -100px, rgba(34,211,238,.15), transparent 60%),
+                  radial-gradient(800px 500px at -10% -50px, rgba(56,189,248,.12), transparent 60%),
+                  var(--bg);
+    }
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+    header{position:sticky;top:0;z-index:50;background:rgba(15,23,42,.8);backdrop-filter: blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .brand{display:flex;align-items:center;gap:10px}
+    .logo{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;color:#0b1220;font-weight:800;box-shadow:var(--shadow)}
+    nav{display:flex;gap:6px;flex-wrap:wrap}
+    .nav-btn{border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));color:var(--text);padding:10px 14px;border-radius:12px;cursor:pointer}
+    .nav-btn.active{outline:2px solid rgba(34,211,238,.45)}
+
+    .hero{padding:80px 20px;text-align:center}
+    .hero h1{font-size:42px;margin-bottom:16px}
+    .hero p{font-size:18px;color:var(--sub);max-width:600px;margin:0 auto 28px}
+    .hero .btn{font-size:18px;padding:14px 24px;margin:6px}
+
+    .features{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:40px}
+    .feature{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);padding:24px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .feature h3{margin:0 0 10px;font-size:20px}
+
+    .grid{display:grid;gap:22px;grid-template-columns: 1.1fr .9fr;}
+    @media (max-width: 900px){ .grid{grid-template-columns:1fr} }
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .card h2{margin:0 0 8px;font-size:20px}
+    .card .head{padding:18px 18px 0}
+    .card .body{padding:18px}
+    label{display:block;margin:10px 0 6px;color:var(--sub);font-size:14px}
+    input,select,textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:var(--panel);color:var(--text)}
+    textarea{min-height:100px;resize:vertical}
+    .row{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+    @media (max-width:700px){.row{grid-template-columns:1fr}}
+    .btn{appearance:none;border:0;cursor:pointer;font-weight:600;padding:12px 16px;border-radius:12px;margin-top:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#0b1220;box-shadow:0 4px 14px rgba(56,189,248,.35)}
+    .btn.secondary{background:transparent;color:var(--text);border:1px solid rgba(255,255,255,.14)}
+    .muted{color:var(--sub);font-size:13px}
+    .status{font-size:13px;margin-top:8px}
+    .status.ok{color:var(--ok)}
+    .status.err{color:var(--err)}
+    section[hidden]{display:none}
+    footer{margin:30px 0;color:var(--sub);font-size:12px;text-align:center}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
+      <div class="brand">
+        <div class="logo">🩺</div>
+        <div>
+          <div style="font-weight:800;letter-spacing:.3px">MedTech Health Portal</div>
+          <div class="muted">Secure access • Reports • AI Assistant</div>
+        </div>
+      </div>
+      <nav id="nav">
+        <button class="nav-btn" data-target="home">Home</button>
+        <button class="nav-btn" data-target="signin">Sign In</button>
+        <button class="nav-btn" data-target="signup">Sign Up</button>
+        <button class="nav-btn" data-target="viewer">Report Viewer</button>
+        <button class="nav-btn" data-target="upload">Report Upload</button>
+        <button class="nav-btn" data-target="assistant">AI Assistant</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="margin-top:22px">
+    <!-- Landing Page -->
+    <section id="home">
+      <div class="hero">
+        <h1>Welcome to MedTech Health Portal</h1>
+        <p>Manage your medical reports securely, upload files with ease, and chat with our AI health assistant for quick insights. All in one place.</p>
+        <button class="btn" onclick="show('signup')">Get Started</button>
+        <button class="btn secondary" onclick="show('signin')">Sign In</button>
+      </div>
+
+      <div class="features">
+        <div class="feature">
+          <h3>📄 Secure Reports</h3>
+          <p>Access all your medical test results anytime, anywhere with full privacy.</p>
+        </div>
+        <div class="feature">
+          <h3>⬆️ Easy Upload</h3>
+          <p>Upload lab results, prescriptions, and scans quickly in multiple formats.</p>
+        </div>
+        <div class="feature">
+          <h3>🤖 AI Assistant</h3>
+          <p>Ask questions about your reports or tests. Get instant, reliable guidance (demo only).</p>
+        </div>
+      </div>
+    </section>
+      <main class="container" style="margin-top:22px">
+    <div class="grid">
+      <!-- Left column: forms & assistant -->
+      <div class="stack">
+        <!-- Sign In -->
+        <section id="signin" class="card">
+          <div class="head"><h2>Sign In</h2><p class="muted">Access your MedTech account</p></div>
+          <div class="body">
+            <form id="signinForm" onsubmit="fakeSignIn(event)">
+              <label>Email</label>
+              <input type="email" name="email" required placeholder="you@example.com" />
+              <label>Password</label>
+              <input type="password" name="password" required placeholder="••••••••" />
+              <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap">
+                <button class="btn" type="submit">Sign In</button>
+                <a class="muted" href="#" onclick="show('signup');return false;">Create an account</a>
+              </div>
+              <div id="signinStatus" class="status" aria-live="polite"></div>
+            </form>
+          </div>
+        </section>
+
+        <!-- Sign Up -->
+        <section id="signup" class="card" hidden>
+          <div class="head"><h2>Sign Up</h2><p class="muted">Create your MedTech account</p></div>
+          <div class="body">
+            <form id="signupForm" onsubmit="fakeSignUp(event)">
+              <div class="row">
+                <div>
+                  <label>Full Name</label>
+                  <input type="text" name="name" required placeholder="Dr. Sam / Alex Patient" />
+                </div>
+                <div>
+                  <label>Role</label>
+                  <select name="role" required>
+                    <option value="">Select role</option>
+                    <option>Patient</option>
+                    <option>Doctor</option>
+                    <option>Lab</option>
+                  </select>
+                </div>
+              </div>
+              <label>Email</label>
+              <input type="email" name="email" required placeholder="name@hospital.org" />
+              <div class="row">
+                <div>
+                  <label>Password</label>
+                  <input type="password" name="password" minlength="6" required placeholder="Minimum 6 characters" />
+                </div>
+                <div>
+                  <label>Confirm Password</label>
+                  <input type="password" name="confirm" minlength="6" required placeholder="Re-enter password" />
+                </div>
+              </div>
+              <label><input type="checkbox" id="termsChk" style="width:auto;margin-right:8px"> I agree to the Terms & Privacy</label>
+              <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap">
+                <button class="btn" type="submit">Create Account</button>
+                <button class="btn secondary" type="button" onclick="document.getElementById('signupForm').reset()">Reset</button>
+              </div>
+              <div id="signupStatus" class="status" aria-live="polite"></div>
+            </form>
+          </div>
+        </section>
+
+        <!-- AI Assistant -->
+        <section id="assistant" class="card" hidden>
+          <div class="head"><h2>AI Health Assistant</h2><p class="muted">Ask about reports, terms, or next steps (demo)</p></div>
+          <div class="body">
+            <div id="chat" class="chat" aria-live="polite" aria-label="Chat transcript"></div>
+            <div class="toolbar">
+              <button class="chip" onclick="quick('Explain my CBC test')">CBC Help</button>
+              <button class="chip" onclick="quick('Is my blood pressure normal?')">BP Check</button>
+              <button class="chip" onclick="quick('How to prepare for fasting blood sugar?')">FBS Prep</button>
+            </div>
+            <div class="chatbar">
+              <input id="chatInput" placeholder="Type your question..." onkeydown="if(event.key==='Enter'){send()}" />
+              <button class="btn" onclick="send()">Send</button>
+            </div>
+            <p class="muted" style="margin-top:8px">Note: Demo only — no medical advice. Always consult a qualified professional.</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right column: reports -->
+      <div class="stack">
+        <!-- Report Viewer -->
+        <section id="viewer" class="card" hidden>
+          <div class="head"><h2>Report Viewer</h2><p class="muted">Browse and filter your medical reports</p></div>
+          <div class="body">
+            <div class="toolbar">
+              <input id="search" placeholder="Search by patient, type, or ID" oninput="filterTable()" />
+              <select id="filterType" onchange="filterTable()">
+                <option value="">All Types</option>
+                <option>CBC</option>
+                <option>LFT</option>
+                <option>KFT</option>
+                <option>XRAY</option>
+                <option>MRI</option>
+              </select>
+              <button class="btn secondary" onclick="seedReports()">Load Sample Data</button>
+            </div>
+            <div style="overflow:auto">
+            <table id="reportTable" aria-label="Reports table">
+              <thead>
+                <tr>
+                  <th>Report ID</th>
+                  <th>Patient</th>
+                  <th>Type</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Rows injected by JS -->
+              </tbody>
+            </table>
+            </div>
+            <p class="muted" id="countInfo" style="margin-top:8px">0 reports</p>
+          </div>
+        </section>
+
+        <!-- Report Upload -->
+        <section id="upload" class="card" hidden>
+          <div class="head"><h2>Upload Report</h2><p class="muted">Attach PDF, image, or data file (demo only)</p></div>
+          <div class="body">
+            <form id="uploadForm" onsubmit="fakeUpload(event)">
+              <div class="row">
+                <div>
+                  <label>Patient Name</label>
+                  <input name="patient" required placeholder="e.g., Alex Roy" />
+                </div>
+                <div>
+                  <label>Patient ID</label>
+                  <input name="pid" required placeholder="e.g., PT-1024" />
+                </div>
+              </div>
+              <div class="row">
+                <div>
+                  <label>Report Type</label>
+                  <select name="rtype" required>
+                    <option value="">Select type</option>
+                    <option>CBC</option>
+                    <option>LFT</option>
+                    <option>KFT</option>
+                    <option>XRAY</option>
+                    <option>MRI</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Report Date</label>
+                  <input type="date" name="rdate" required />
+                </div>
+              </div>
+              <label>Attach File</label>
+              <input type="file" name="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.csv" required />
+              <label>Notes (optional)</label>
+              <textarea name="notes" placeholder="Any context for the clinician..."></textarea>
+              <button class="btn" type="submit">Upload</button>
+              <div id="uploadStatus" class="status" aria-live="polite"></div>
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <footer>
+      © <span id="year"></span> MedTech Demo • Single-file HTML • Client-side only
+    </footer>
+  </main>
+
+
+    <!-- Existing App Sections (signin, signup, viewer, upload, assistant) -->
+    <!-- ... keep your same code here unchanged ... -->
+
+    <footer>
+      © <span id="year"></span> MedTech Demo • Landing + Portal
+    </footer>
+  </main>
+
+  <script>
+    const sections = ["home","signin","signup","viewer","upload","assistant"];
+    const nav = document.getElementById('nav');
+    function show(id){
+      sections.forEach(s=>{
+        document.getElementById(s).hidden = (s!==id);
+        const btn = nav.querySelector(`[data-target="${s}"]`);
+        if(btn) btn.classList.toggle('active', s===id);
+      });
+    }
+    nav.addEventListener('click',(e)=>{if(e.target.matches('[data-target]'))show(e.target.dataset.target)});
+    show('home');
+    document.getElementById('year').textContent=new Date().getFullYear();
+  </script>
+</body>
+</html>
